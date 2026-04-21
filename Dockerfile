@@ -1,24 +1,11 @@
-# ── Stage 1: Build ──────────────────────────────────────────────────────────
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# Install dependencies first (layer cache)
-COPY package.json package-lock.json* ./
-RUN npm ci --legacy-peer-deps
-
-# Copy source and build
-COPY . .
-RUN npm run build
-
-# ── Stage 2: Serve ───────────────────────────────────────────────────────────
+# ── Single HTML Deployment ────────────────────────────────────────────────
 FROM nginx:stable-alpine
 
 # Remove default nginx page
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built assets from builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copy the standalone HTML file directly
+COPY index.html /usr/share/nginx/html/index.html
 
 # nginx config for SPA (client-side routing)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
