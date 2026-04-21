@@ -921,7 +921,7 @@
      */
     function runTests() {
       console.group('[Pulsiq:Tests]');
-      console.assert(sanitizeInput('<script>alert(1)</script>') === 'scriptalert(1)/script', 'XSS sanitize');
+      console.assert(sanitizeInput('<script>alert(1)<\\/script>') === 'scriptalert(1)/script', 'XSS sanitize');
       console.assert(sanitizeInput('') === '', 'Empty string');
       console.assert(sanitizeInput(null) === '', 'Null input');
       console.assert(sanitizeInput(undefined) === '', 'Undefined input');
